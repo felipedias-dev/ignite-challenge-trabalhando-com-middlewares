@@ -34,7 +34,16 @@ function checksCreateTodosUserAvailability(request, response, next) {
 }
 
 function checksTodoExists(request, response, next) {
-  
+  const { username } = request.headers;
+  const { id } = request.params;
+
+  const user = users.find(user => user.username === username);
+
+  if (!(validate(id) && user.id === id)) {
+    return response.status(400).json({ error: 'Invalid id' });
+  }
+
+  next();
 }
 
 function findUserById(request, response, next) {
